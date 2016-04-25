@@ -2,12 +2,15 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstdio>
+#include <string>
 
 using namespace std;
 
 
-void wypiszOdzywki(const char* fileName);
+void wypiszOdzywki();
 
+int rozmiarBazy = 0;	// tu zapisujemy ile jest odzywek
+string* odzywki;	// tu trzymamy odzywki
 
 
 
@@ -17,7 +20,23 @@ int main(int argc, char* argv[])
 		cerr << "Nie podano nazwy pliku bazy danych" << endl;
 		return -1;
 	}
-	const char* plikBazy = argv[1];
+
+	/** Wczytywanie bazy do pamięci */
+	// Najpierw otwieramy plik
+	ifstream infile(argv[1]);
+
+	string line;
+
+	// Pierwsza linia zawiera ilosc wpisow
+	getline(infile, line);
+	rozmiarBazy = atoi(line.c_str());
+
+	cout << "Baza ma " << rozmiarBazy << " wpisow" << endl;
+	odzywki = new string[rozmiarBazy];	// dynamiczna tablica ze stringami, gdzie odzywki sobie zapiszemy dla dalszych potrzeb
+
+	for (int n = 0; n < rozmiarBazy; n++) {
+		if (!getline(infile, odzywki[n])) break;
+	}
 
 	while (true) {
 		cout << "MENU GLOWNE" << endl;
@@ -50,7 +69,7 @@ int main(int argc, char* argv[])
 
 			case '5':
 				cout << "Wypisanie wszystkich odzywek" << endl;
-				wypiszOdzywki(plikBazy);
+				wypiszOdzywki();
 				break;
 
 			case '6':
@@ -66,15 +85,9 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void wypiszOdzywki(const char* fileName)
+void wypiszOdzywki()
 {
-	ifstream infile(fileName);
-	string line;
-
-	// Ignore first line
-	getline(infile, line);
-
-	while (getline(infile, line)) {
-		cout << line << endl;
+	for (int n = 0; n < rozmiarBazy; n++) {
+		cout << (n + 1) << ". " << odzywki[n] << endl;
 	}
 }
