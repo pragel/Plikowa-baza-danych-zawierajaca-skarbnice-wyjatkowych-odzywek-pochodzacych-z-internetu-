@@ -8,6 +8,8 @@ using namespace std;
 
 
 void wypiszOdzywki();
+void dodajOdzywke();
+void usunOstatniaOdzywke();
 
 int rozmiarBazy = 0;	// tu zapisujemy ile jest odzywek
 string* odzywki;	// tu trzymamy odzywki
@@ -53,10 +55,12 @@ int main(int argc, char* argv[])
 		switch (getchar()) {
 			case '1':
 				cout << "Dodanie odzywki" << endl;
+				dodajOdzywke();
 				break;
 
 			case '2':
 				cout << "Usuniecie ostatniej odzywki" << endl;
+				usunOstatniaOdzywke();
 				break;
 
 			case '3':
@@ -90,4 +94,37 @@ void wypiszOdzywki()
 	for (int n = 0; n < rozmiarBazy; n++) {
 		cout << (n + 1) << ". " << odzywki[n] << endl;
 	}
+}
+
+void dodajOdzywke()
+{
+	string nowaOdzywka;
+	cout << "? ";
+	cin.ignore();	// Pozbywam sie entera ze strumienia
+	getline(cin, nowaOdzywka, '\n');
+
+	string* odzywki2 = new string[rozmiarBazy+1];
+	for (int n = 0; n < rozmiarBazy; n++) {
+		odzywki2[n] = odzywki[n];
+	}
+	odzywki2[rozmiarBazy] = nowaOdzywka;	// Dodatkowo dopisuje nowa odzywke
+	delete[] odzywki;		// usuwam stare odzywki
+	odzywki = odzywki2;	// zapisuje nowe odzywki pod starym wskaznikiem
+	rozmiarBazy++;		// zwiekszamy rozmiar bazy
+}
+
+void usunOstatniaOdzywke()
+{
+	if (rozmiarBazy == 0) {
+		cerr << "Brak odzywek do usuniecia" << endl;
+		return;
+	}
+
+	string* odzywki2 = new string[rozmiarBazy-1];
+	for (int n = 0; n < rozmiarBazy - 1; n++) {
+		odzywki2[n] = odzywki[n];
+	}
+	delete[] odzywki;
+	odzywki = odzywki2;
+	rozmiarBazy--;
 }
