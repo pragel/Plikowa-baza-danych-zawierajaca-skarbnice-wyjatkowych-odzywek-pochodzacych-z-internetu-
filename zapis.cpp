@@ -134,9 +134,10 @@ void usunOstatniaOdzywke()
 void zapiszOdzywki(const char* fileName)
 {
 	ofstream file(fileName);
+	file << rozmiarBazy << endl;
 	for (int n = 0; n < rozmiarBazy; n++) {
 		file << (n + 1) << ". " << odzywki[n] << endl;	
 	}
-	file << rozmiarBazy << endl;
+
 	file.close();
 }
