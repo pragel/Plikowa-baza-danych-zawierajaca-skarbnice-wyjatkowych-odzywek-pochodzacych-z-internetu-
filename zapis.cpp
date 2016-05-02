@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 
 			case '3':
 				cout << "Zapisz odzywke" << endl;
-				zapiszOdzywki(const char* fileName);
+				zapiszOdzywki(argv[1]);
 				break;
 
 			case '4':
@@ -135,7 +135,8 @@ void zapiszOdzywki(const char* fileName)
 {
 	ofstream file(fileName);
 	for (int n = 0; n < rozmiarBazy; n++) {
-		file << (n + 1) << ". " << odzywki[n] << endl;
+		file << (n + 1) << ". " << odzywki[n] << endl;	
 	}
+	file << rozmiarBazy << endl;
 	file.close();
 }
